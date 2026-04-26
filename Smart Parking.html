@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Parking System - Premium</title>
+<link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
+<link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #1a1a2e;
+  --secondary: #16213e;
+  --accent: #0f3460;
+  --highlight: #e94560;
+  --success: #00d9a5;
+  --warning: #ffc107;
+  --info: #00b4d8;
+  --light: #edf2f7;
+  --dark: #0a0a0f;
+  --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --shadow: 0 10px 40px rgba(0,0,0,0.2);
+  --shadow-sm: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated Background */
+.bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+.bg-animation::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='[w3.org](http://www.w3.org/2000/svg)'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating Particles */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  animation: float 20s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Header */
+header {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.logo h1 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.logo span {
+  color: var(--highlight);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 10px;
+}
+
+nav a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-1);
+  transition: left 0.3s ease;
+  z-index: -1;
+  border-radius: 25px;
+}
+
+nav a:hover::before, nav a.active::before {
+  left: 0;
+}
+
+nav a:hover, nav a.active {
+  color: white;
+}
+
+/* Main Container */
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+/* Section Styling */
+.section {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+
+.stat-icon.available { background: var(--gradient-4); }
+.stat-icon.booked { background: var(--gradient-2); }
+.stat-icon.revenue { background: var(--gradient-1); }
+.stat-icon.users { background: var(--gradient-3); }
+
+.stat-info h3 {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.stat-info .value {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Parking Grid */
+.parking-section h2 {
+  color: white;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.floor-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.floor-tab {
+  padding: 12px 25px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.floor-tab:hover, .floor-tab.active {
+  background: var(--gradient-1);
+  border-color: transparent;
+}
+
+.parking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+.slot {
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.slot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.slot.available::before {
+  background: var(--gradient-4);
+}
+
+.slot.booked::before {
+  background: var(--gradient-2);
+}
+
+.slot.reserved::before {
+  background: var(--gradient-1);
+}
+
+.slot:hover::before {
+  opacity: 0.1;
+}
+
+.slot.available {
+  border-color: var(--success);
+}
+
+.slot.booked {
+  border-color: var(--highlight);
+  cursor: not-allowed;
+}
+
+.slot.reserved {
+  border-color: var(--warning);
+}
+
+.slot-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.slot.available .slot-icon { color: var(--success); }
+.slot.booked .slot-icon { color: var(--highlight); }
+.slot.reserved .slot-icon { color: var(--warning); }
+
+.slot-id {
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.slot-status {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.slot.available .slot-status {
+  background: rgba(0,217,165,0.2);
+  color: var(--success);
+}
+
+.slot.booked .slot-status {
+  background: rgba(233,69,96,0.2);
+  color: var(--highlight);
+}
+
+.slot.reserved .slot-status {
+  background: rgba(255,193,7,0.2);
+  color: var(--warning);
+}
+
+.slot-type {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Login Section */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+}
+
+.login-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  padding: 50px;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+}
+
+.login-card h2 {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.login-card p {
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 30px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.4);
+  font-size: 1.1rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 15px 15px 50px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--highlight);
+  background: rgba(255,255,255,0.1);
+}
+
+.input-group input::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+/* Buttons */
+.btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-primary {
+  background: var(--gradient-1);
+  color: white;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success {
+  background: var(--gradient-4);
+  color: var(--dark);
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.4);
+}
+
+.btn-danger {
+  background: var(--gradient-2);
+  color: white;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.2);
+  color: white;
+}
+
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: var(--secondary);
+  border-radius: 25px;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  border: 1px solid rgba(255,255,255,0.1);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.modal-header h3 {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.modal-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: var(--highlight);
+}
+
+.booking-details {
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.booking-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+}
+
+.booking-row:last-child {
+  border-bottom: none;
+}
+
+.booking-row .label {
+  color: rgba(255,255,255,0.5);
+}
+
+.booking-row .value {
+  font-weight: 600;
+  color: white;
+}
+
+.booking-row.total {
+  font-size: 1.2rem;
+  color: var(--success);
+}
+
+.duration-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.duration-btn {
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+}
+
+.duration-btn:hover, .duration-btn.active {
+  background: var(--gradient-1);
+  border-color: transparent;
+}
+
+/* Admin Section */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.admin-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-card h3 {
+  color: white;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-card h3 i {
+  color: var(--highlight);
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Activity Log */
+.activity-log {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-left: 3px solid var(--highlight);
+}
+
+.activity-item.booking { border-left-color: var(--success); }
+.activity-item.checkout { border-left-color: var(--info); }
+.activity-item.admin { border-left-color: var(--warning); }
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-info p {
+  color: white;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.activity-info span {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 2000;
+}
+
+.toast {
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 15px 25px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+  animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s;
+  min-width: 300px;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+.toast.success { border-left: 4px solid var(--success); }
+.toast.error { border-left: 4px solid var(--highlight); }
+.toast.warning { border-left: 4px solid var(--warning); }
+.toast.info { border-left: 4px solid var(--info); }
+
+.toast i {
+  font-size: 1.2rem;
+}
+
+.toast.success i { color: var(--success); }
+.toast.error i { color: var(--highlight); }
+.toast.warning i { color: var(--warning); }
+.toast.info i { color: var(--info); }
+
+.toast p {
+  color: white;
+  flex: 1;
+}
+
+/* User Profile */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: var(--gradient-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.user-info {
+  display: none;
+}
+
+.user-info h4 {
+  color: white;
+  font-size: 0.9rem;
+}
+
+.user-info span {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.75rem;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.legend-color.available { background: var(--success); }
+.legend-color.booked { background: var(--highlight); }
+.legend-color.reserved { background: var(--warning); }
+
+/* My Bookings */
+.bookings-list {
+  display: grid;
+  gap: 15px;
+}
+
+.booking-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.booking-card-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.booking-slot-id {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.booking-meta h4 {
+  color: white;
+  margin-bottom: 5px;
+}
+
+.booking-meta p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.85rem;
+}
+
+.booking-timer {
+  text-align: right;
+}
+
+.booking-timer .time {
+  color: var(--success);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.booking-timer .label {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  nav a {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .main-container {
+    padding: 15px;
+  }
+  
+  .login-card {
+    padding: 30px 20px;
+  }
+  
+  .modal {
+    padding: 25px;
+    margin: 15px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+  }
+  
+  .stat-info .value {
+    font-size: 1.5rem;
+  }
+  
+  .user-info {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .user-info {
+    display: block;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Loading Animation */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Vehicle Type Icons */
+.vehicle-type {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.vehicle-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.vehicle-btn:hover, .vehicle-btn.active {
+  background: var(--gradient-1);
+  border-color: transparent;
+}
+</style>
+</head>
+
+<body>
+<div class="bg-animation"></div>
+<div class="particles" id="particles"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🚗</div>
+    <h1>Smart<span> Parking </span></h1>
+  </div>
+  
+  <nav id="mainNav">
+    <a href="#" data-section="home" class="active"><i class="fas fa-home"></i> Home</a>
+    <a href="#" data-section="dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+    <a href="#" data-section="bookings"><i class="fas fa-ticket-alt"></i> My Bookings</a>
+    <a href="#" data-section="admin"><i class="fas fa-cog"></i> Admin</a>
+  </nav>
+  
+  <div class="user-profile" id="userProfile" style="display: none;">
+    <div class="user-info">
+      <h4 id="userName">Guest</h4>
+      <span>Premium Member</span>
+    </div>
+    <div class="user-avatar" id="userAvatar">G</div>
+  </div>
+</header>
+
+<div class="main-container">
+  <!-- HOME / LOGIN SECTION -->
+  <div id="home" class="section active">
+    <div class="login-container">
+      <div class="login-card">
+        <div style="font-size: 4rem; margin-bottom: 20px;"> 🅿️</div>
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your parking dashboard</p>
+        
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="loginUsername" placeholder="Username">
+        </div>
+        
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="loginPassword" placeholder="Password">
+        </div>
+        
+       <button class="btn btn-primary" onclick="handleLogin()">
+  <i class="fas fa-sign-in-alt"></i> Sign In
+</button>
+
+<button class="btn btn-outline" onclick="showSignup()" style="margin-top: 10px; width: 100%;">
+  <i class="fas fa-user-plus"></i> Create Account
+</button>
+
+<p style="margin-top: 20px; color: rgba(255,255,255,0.5); font-size: 0.85rem;">
+  Demo: admin / 1234
+</p>
+        
+        <div class="vehicle-type" style="margin-top: 30px;">
+          <div class="vehicle-btn" title="Car"><i class="fas fa-car"></i></div>
+          <div class="vehicle-btn" title="Motorcycle"><i class="fas fa-motorcycle"></i></div>
+          <div class="vehicle-btn" title="Truck"><i class="fas fa-truck"></i></div>
+          <div class="vehicle-btn" title="Electric"><i class="fas fa-charging-station"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div id="dashboard" class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon available"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-info">
+          <h3>Available Slots</h3>
+          <div class="value" id="availableCount">0</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon booked"><i class="fas fa-car"></i></div>
+        <div class="stat-info">
+          <h3>Occupied Slots</h3>
+          <div class="value" id="bookedCount">0</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon revenue"><i class="fas fa-rupee-sign"></i></div>
+        <div class="stat-info">
+          <h3>Today's Revenue</h3>
+          <div class="value" id="revenue">₹0</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon users"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+          <h3>Active Users</h3>
+          <div class="value" id="activeUsers">0</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="parking-section">
+      <h2><i class="fas fa-parking"></i> Parking Slots</h2>
+      
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color available"></div>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color booked"></div>
+          <span>Occupied</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color reserved"></div>
+          <span>Reserved</span>
+        </div>
+      </div>
+      
+      <div class="floor-tabs">
+        <div class="floor-tab active" data-floor="A">Floor A</div>
+        <div class="floor-tab" data-floor="B">Floor B</div>
+        <div class="floor-tab" data-floor="C">Floor C</div>
+        <div class="floor-tab" data-floor="EV">EV Charging</div>
+      </div>
+      
+      <div class="parking-grid" id="parkingGrid"></div>
+    </div>
+  </div>
+
+  <!-- MY BOOKINGS SECTION -->
+  <div id="bookings" class="section">
+    <h2 style="color: white; margin-bottom: 20px;"><i class="fas fa-ticket-alt"></i> My Bookings</h2>
+    <div class="bookings-list" id="bookingsList">
+      <div class="card" style="text-align: center; padding: 50px;">
+        <i class="fas fa-ticket-alt" style="font-size: 3rem; color: rgba(255,255,255,0.2); margin-bottom: 15px;"></i>
+        <p style="color: rgba(255,255,255,0.5);">No active bookings</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN SECTION -->
+  <div id="admin" class="section">
+    <h2 style="color: white; margin-bottom: 20px;"><i class="fas fa-cog"></i> Admin Panel</h2>
+    
+    <div class="admin-grid">
+      <div class="admin-card">
+        <h3><i class="fas fa-tools"></i> Quick Actions</h3>
+        <div class="admin-actions">
+          <button class="btn btn-success" onclick="addNewSlot()">
+            <i class="fas fa-plus"></i> Add New Slot
+          </button>
+          <button class="btn btn-outline" onclick="resetAllSlots()">
+            <i class="fas fa-sync"></i> Reset All Slots
+          </button>
+          <button class="btn btn-outline" onclick="generateReport()">
+            <i class="fas fa-file-alt"></i> Generate Report
+          </button>
+          <button class="btn btn-danger" onclick="emergencyRelease()">
+            <i class="fas fa-exclamation-triangle"></i> Emergency Release
+          </button>
+        </div>
+      </div>
+      
+      <div class="admin-card">
+        <h3><i class="fas fa-chart-line"></i> Statistics</h3>
+        <div class="booking-details">
+          <div class="booking-row">
+            <span class="label">Total Slots</span>
+            <span class="value" id="totalSlots">0</span>
+          </div>
+          <div class="booking-row">
+            <span class="label">Occupancy Rate</span>
+            <span class="value" id="occupancyRate">0%</span>
+          </div>
+          <div class="booking-row">
+            <span class="label">Today's Bookings</span>
+            <span class="value" id="todayBookings">0</span>
+          </div>
+          <div class="booking-row">
+            <span class="label">Peak Hour</span>
+            <span class="value">2:00 PM - 4:00 PM</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="admin-card" style="grid-column: span 2;">
+        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+        <div class="activity-log" id="activityLog"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-ticket-alt"></i> Book Slot</h3>
+      <button class="modal-close" onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="booking-details">
+      <div class="booking-row">
+        <span class="label">Slot Number</span>
+        <span class="value" id="modalSlotId">-</span>
+      </div>
+      <div class="booking-row">
+        <span class="label">Floor</span>
+        <span class="value" id="modalFloor">-</span>
+      </div>
+      <div class="booking-row">
+        <span class="label">Type</span>
+        <span class="value" id="modalType">Standard</span>
+      </div>
+    </div>
+    
+    <p style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Select Duration</p>
+    <div class="duration-selector">
+      <div class="duration-btn" data-hours="1">1 Hr</div>
+      <div class="duration-btn active" data-hours="2">2 Hrs</div>
+      <div class="duration-btn" data-hours="4">4 Hrs</div>
+      <div class="duration-btn" data-hours="8">8 Hrs</div>
+    </div>
+    
+    <div class="booking-details" style="margin-top: 20px;">
+      <div class="booking-row">
+        <span class="label">Rate</span>
+        <span class="value">₹30/hour</span>
+      </div>
+      <div class="booking-row total">
+        <span class="label">Total Amount</span>
+        <span class="value" id="totalAmount">₹60</span>
+      </div>
+    </div>
+    
+    <button class="btn btn-success" style="width: 100%; margin-top: 20px;" onclick="confirmBooking()">
+      <i class="fas fa-check"></i> Confirm & Pay
+    </button>
+  </div>
+</div>
+<!-- SIGNUP MODAL -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-user-plus"></i> Sign Up</h3>
+      <button class="modal-close" onclick="closeSignup()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-user"></i>
+      <input type="text" id="signupUsername" placeholder="Username">
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="signupPassword" placeholder="Password">
+    </div>
+
+    <button class="btn btn-success" onclick="handleSignup()" style="width: 100%;">
+      <i class="fas fa-check"></i> Register
+    </button>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ==================== DATA & STATE ====================
+const state = {
+  isLoggedIn: false,
+  currentUser: null,
+  currentFloor: 'A',
+  selectedSlot: null,
+  selectedDuration: 2,
+  revenue: 0,
+  bookings: [],
+  activities: []
+};
+
+const RATE_PER_HOUR = 30;
+
+// Parking Slots Data
+let parkingSlots = {
+  A: [
+    { id: 'A1', status: 'available', type: 'standard' },
+    { id: 'A2', status: 'booked', type: 'standard', bookedBy: 'John' },
+    { id: 'A3', status: 'available', type: 'standard' },
+    { id: 'A4', status: 'reserved', type: 'handicap' },
+    { id: 'A5', status: 'available', type: 'standard' },
+    { id: 'A6', status: 'booked', type: 'standard', bookedBy: 'Alice' },
+    { id: 'A7', status: 'available', type: 'compact' },
+    { id: 'A8', status: 'available', type: 'standard' },
+  ],
+  B: [
+    { id: 'B1', status: 'available', type: 'standard' },
+    { id: 'B2', status: 'available', type: 'standard' },
+    { id: 'B3', status: 'booked', type: 'standard', bookedBy: 'Mike' },
+    { id: 'B4', status: 'available', type: 'compact' },
+    { id: 'B5', status: 'available', type: 'standard' },
+    { id: 'B6', status: 'reserved', type: 'vip' },
+  ],
+  C: [
+    { id: 'C1', status: 'available', type: 'standard' },
+    { id: 'C2', status: 'available', type: 'standard' },
+    { id: 'C3', status: 'available', type: 'standard' },
+    { id: 'C4', status: 'booked', type: 'standard', bookedBy: 'Sarah' },
+  ],
+  EV: [
+    { id: 'EV1', status: 'available', type: 'electric' },
+    { id: 'EV2', status: 'booked', type: 'electric', bookedBy: 'Tesla Owner' },
+    { id: 'EV3', status: 'available', type: 'electric' },
+    { id: 'EV4', status: 'available', type: 'electric' },
+  ]
+};
+
+// Sample Activities
+const sampleActivities = [
+  { type: 'booking', message: 'Slot A2 booked by John', time: '2 mins ago' },
+  { type: 'checkout', message: 'Slot B5 checked out', time: '15 mins ago' },
+  { type: 'booking', message: 'Slot EV2 booked by Tesla Owner', time: '30 mins ago' },
+  { type: 'admin', message: 'New slot C4 added', time: '1 hour ago' },
+  { type: 'checkout', message: 'Slot A6 checked out', time: '2 hours ago' },
+];
+
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', () => {
+  createParticles();
+  setupNavigation();
+  setupFloorTabs();
+  setupDurationButtons();
+  renderParkingGrid();
+  updateStats();
+  renderActivityLog();
+});
+
+// Create floating particles
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 20 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    container.appendChild(particle);
+  }
+}
+
+// ==================== NAVIGATION ====================
+function setupNavigation() {
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const section = link.dataset.section;
+      
+      // Check login for protected sections
+      if (!state.isLoggedIn && section !== 'home') {
+        showToast('Please login first', 'warning');
+        return;
+      }
+      
+      // Update active states
+      document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      
+      // Show section
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(section).classList.add('active');
+    });
+  });
+}
+
+// ==================== LOGIN ====================
+function handleLogin() {
+  const username = document.getElementById('loginUsername').value;
+  const password = document.getElementById('loginPassword').value;
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Default admin login
+  if (username === 'admin' && password === '1234') {
+    loginSuccess(username);
+    return;
+  }
+
+  // Check registered users
+  const user = users.find(u => u.username === username && u.password === password);
+
+  if (user) {
+    loginSuccess(username);
+  } else {
+    showToast('Invalid credentials', 'error');
+  }
+}
+
+// Common login success function
+function loginSuccess(username) {
+  state.isLoggedIn = true;
+  state.currentUser = username;
+
+  document.getElementById('userProfile').style.display = 'flex';
+  document.getElementById('userName').textContent = username;
+  document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+
+  document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+  document.querySelector('[data-section="dashboard"]').classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('dashboard').classList.add('active');
+
+  showToast('Welcome, ' + username + '!', 'success');
+  addActivity('admin', `${username} logged in`);
+}
+// ==================== SIGNUP ====================
+
+// Show signup modal
+function showSignup() {
+  document.getElementById('signupModal').classList.add('active');
+}
+
+// Close signup modal
+function closeSignup() {
+  document.getElementById('signupModal').classList.remove('active');
+}
+
+// Handle signup
+function handleSignup() {
+  const username = document.getElementById('signupUsername').value;
+  const password = document.getElementById('signupPassword').value;
+
+  if (!username || !password) {
+    showToast('Please fill all fields', 'warning');
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Check if user already exists
+  if (users.find(u => u.username === username)) {
+    showToast('Username already exists', 'error');
+    return;
+  }
+
+  // Save new user
+  users.push({ username, password });
+  localStorage.setItem('users', JSON.stringify(users));
+
+  showToast('Account created successfully!', 'success');
+  closeSignup();
+}
+
+// ==================== FLOOR TABS ====================
+function setupFloorTabs() {
+  document.querySelectorAll('.floor-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      state.currentFloor = tab.dataset.floor;
+      renderParkingGrid();
+    });
+  });
+}
+
+// ==================== PARKING GRID ====================
+function renderParkingGrid() {
+  const grid = document.getElementById('parkingGrid');
+  const slots = parkingSlots[state.currentFloor];
+  
+  grid.innerHTML = slots.map(slot => `
+    <div class="slot ${slot.status}" onclick="handleSlotClick('${slot.id}')" data-id="${slot.id}">
+      <div class="slot-icon">
+        ${getSlotIcon(slot.type, slot.status)}
+      </div>
+      <div class="slot-id">${slot.id}</div>
+      <div class="slot-status">${capitalizeFirst(slot.status)}</div>
+      <div class="slot-type">${getTypeLabel(slot.type)}</div>
+    </div>
+  `).join('');
+  
+  updateStats();
+}
+
+function getSlotIcon(type, status) {
+  if (status === 'booked') return '<i class="fas fa-car"></i>';
+  if (type === 'electric') return '<i class="fas fa-charging-station"></i>';
+  if (type === 'handicap') return '<i class="fas fa-wheelchair"></i>';
+  if (type === 'vip') return '<i class="fas fa-star"></i>';
+  return '<i class="fas fa-parking"></i>';
+}
+
+function getTypeLabel(type) {
+  const labels = {
+    standard: 'Standard',
+    compact: 'Compact',
+    handicap: 'Accessible',
+    vip: 'VIP',
+    electric: 'EV Charging'
+  };
+  return labels[type] || 'Standard';
+}
+
+function capitalizeFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ==================== SLOT INTERACTION ====================
+function handleSlotClick(slotId) {
+  const floor = state.currentFloor;
+  const slot = parkingSlots[floor].find(s => s.id === slotId);
+  
+  if (slot.status === 'booked') {
+    showToast('This slot is already occupied', 'warning');
+    return;
+  }
+  
+  if (slot.status === 'reserved') {
+    showToast('This slot is reserved', 'warning');
+    return;
+  }
+  
+  // Open booking modal
+  state.selectedSlot = slot;
+  document.getElementById('modalSlotId').textContent = slot.id;
+  document.getElementById('modalFloor').textContent = 'Floor ' + floor;
+  document.getElementById('modalType').textContent = getTypeLabel(slot.type);
+  updateTotalAmount();
+  document.getElementById('bookingModal').classList.add('active');
+}
+
+// ==================== DURATION SELECTION ====================
+function setupDurationButtons() {
+  document.querySelectorAll('.duration-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.selectedDuration = parseInt(btn.dataset.hours);
+      updateTotalAmount();
+    });
+  });
+}
+
+function updateTotalAmount() {
+  const total = state.selectedDuration * RATE_PER_HOUR;
+  document.getElementById('totalAmount').textContent = '₹' + total;
+}
+
+// ==================== BOOKING ====================
+function confirmBooking() {
+  if (!state.selectedSlot) return;
+  
+  const floor = state.currentFloor;
+  const slotIndex = parkingSlots[floor].findIndex(s => s.id === state.selectedSlot.id);
+  
+  if (slotIndex !== -1) {
+    parkingSlots[floor][slotIndex].status = 'booked';
+    parkingSlots[floor][slotIndex].bookedBy = state.currentUser;
+    parkingSlots[floor][slotIndex].bookedAt = new Date();
+    parkingSlots[floor][slotIndex].duration = state.selectedDuration;
+    
+    // Add to bookings
+    const booking = {
+      slotId: state.selectedSlot.id,
+      floor: floor,
+      duration: state.selectedDuration,
+      amount: state.selectedDuration * RATE_PER_HOUR,
+      bookedAt: new Date()
+    };
+    state.bookings.push(booking);
+    state.revenue += booking.amount;
+    
+    // Update UI
+    closeModal();
+    renderParkingGrid();
+    renderBookings();
+    addActivity('booking', `Slot ${state.selectedSlot.id} booked by ${state.currentUser}`);
+    showToast('Booking confirmed! Slot ' + state.selectedSlot.id, 'success');
+  }
+}
+
+function closeModal() {
+  document.getElementById('bookingModal').classList.remove('active');
+  state.selectedSlot = null;
+}
+
+// ==================== MY BOOKINGS ====================
+function renderBookings() {
+  const container = document.getElementById('bookingsList');
+  
+  if (state.bookings.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align: center; padding: 50px;">
+        <i class="fas fa-ticket-alt" style="font-size: 3rem; color: rgba(255,255,255,0.2); margin-bottom: 15px;"></i>
+        <p style="color: rgba(255,255,255,0.5);">No active bookings</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = state.bookings.map((booking, index) => `
+    <div class="booking-card">
+      <div class="booking-card-info">
+        <div class="booking-slot-id">${booking.slotId}</div>
+        <div class="booking-meta">
+          <h4>Floor ${booking.floor} - ${booking.duration} Hour${booking.duration > 1 ? 's' : ''}</h4>
+          <p><i class="fas fa-clock"></i> Booked at ${formatTime(booking.bookedAt)}</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="booking-timer">
+          <div class="time">${booking.duration}:00</div>
+          <div class="label">Remaining</div>
+        </div>
+        <button class="btn btn-danger" onclick="checkoutSlot(${index})" style="padding: 10px 15px;">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function checkoutSlot(bookingIndex) {
+  const booking = state.bookings[bookingIndex];
+  const floor = booking.floor;
+  const slotIndex = parkingSlots[floor].findIndex(s => s.id === booking.slotId);
+  
+  if (slotIndex !== -1) {
+    parkingSlots[floor][slotIndex].status = 'available';
+    delete parkingSlots[floor][slotIndex].bookedBy;
+    delete parkingSlots[floor][slotIndex].bookedAt;
+    delete parkingSlots[floor][slotIndex].duration;
+  }
+  
+  state.bookings.splice(bookingIndex, 1);
+  renderParkingGrid();
+  renderBookings();
+  addActivity('checkout', `Slot ${booking.slotId} checked out`);
+  showToast('Checked out successfully!', 'success');
+}
+
+function formatTime(date) {
+  return new Date(date).toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+}
+
+// ==================== STATISTICS ====================
+function updateStats() {
+  let available = 0, booked = 0, total = 0;
+  
+  Object.values(parkingSlots).forEach(floor => {
+    floor.forEach(slot => {
+      total++;
+      if (slot.status === 'available') available++;
+      if (slot.status === 'booked') booked++;
+    });
+  });
+  
+  document.getElementById('availableCount').textContent = available;
+  document.getElementById('bookedCount').textContent = booked;
+  document.getElementById('revenue').textContent = '₹' + state.revenue;
+  document.getElementById('activeUsers').textContent = state.bookings.length;
+  
+  // Admin stats
+  document.getElementById('totalSlots').textContent = total;
+  document.getElementById('occupancyRate').textContent = Math.round((booked / total) * 100) + '%';
+  document.getElementById('todayBookings').textContent = state.bookings.length;
+}
+
+// ==================== ACTIVITY LOG ====================
+function addActivity(type, message) {
+  state.activities.unshift({
+    type,
+    message,
+    time: 'Just now'
+  });
+  renderActivityLog();
+}
+
+function renderActivityLog() {
+  const container = document.getElementById('activityLog');
+  const activities = [...state.activities, ...sampleActivities].slice(0, 10);
+  
+  container.innerHTML = activities.map(activity => `
+    <div class="activity-item ${activity.type}">
+      <div class="activity-icon">
+        <i class="fas fa-${getActivityIcon(activity.type)}"></i>
+      </div>
+      <div class="activity-info">
+        <p>${activity.message}</p>
+        <span>${activity.time}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getActivityIcon(type) {
+  const icons = {
+    booking: 'ticket-alt',
+    checkout: 'sign-out-alt',
+    admin: 'cog'
+  };
+  return icons[type] || 'info';
+}
+
+// ==================== ADMIN FUNCTIONS ====================
+function addNewSlot() {
+  const floor = state.currentFloor;
+  const newId = floor + (parkingSlots[floor].length + 1);
+  
+  parkingSlots[floor].push({
+    id: newId,
+    status: 'available',
+    type: floor === 'EV' ? 'electric' : 'standard'
+  });
+  
+  renderParkingGrid();
+  addActivity('admin', `New slot ${newId} added`);
+  showToast('New slot added: ' + newId, 'success');
+}
+
+function resetAllSlots() {
+  if (confirm('Are you sure you want to reset all slots?')) {
+    Object.keys(parkingSlots).forEach(floor => {
+      parkingSlots[floor].forEach(slot => {
+        slot.status = 'available';
+        delete slot.bookedBy;
+        delete slot.bookedAt;
+        delete slot.duration;
+      });
+    });
+    
+    state.bookings = [];
+    renderParkingGrid();
+    renderBookings();
+    addActivity('admin', 'All slots have been reset');
+    showToast('All slots reset successfully', 'success');
+  }
+}
+
+function generateReport() {
+  let available = 0, booked = 0, total = 0;
+  
+  Object.values(parkingSlots).forEach(floor => {
+    floor.forEach(slot => {
+      total++;
+      if (slot.status === 'available') available++;
+      if (slot.status === 'booked') booked++;
+    });
+  });
+  
+  const report = `
+📊 PARKING REPORT
+━━━━━━━━━━━━━━━━━
+📅 Date: ${new Date().toLocaleDateString()}
+⏰ Time: ${new Date().toLocaleTimeString()}
+
+📈 Statistics:
+• Total Slots: ${total}
+• Available: ${available}
+• Occupied: ${booked}
+• Occupancy Rate: ${Math.round((booked / total) * 100)}%
+
+💰 Revenue:
+• Today's Revenue: ₹${state.revenue}
+• Total Bookings: ${state.bookings.length}
+━━━━━━━━━━━━━━━━━
+  `;
+  
+  alert(report);
+  addActivity('admin', 'Report generated');
+}
+
+function emergencyRelease() {
+  if (confirm('⚠️ EMERGENCY: Release all slots immediately?')) {
+    resetAllSlots();
+    showToast('Emergency release activated!', 'error');
+    addActivity('admin', '🚨 Emergency release activated');
+  }
+}
+
+// ==================== TOAST NOTIFICATIONS ====================
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const icons = {
+    success: 'check-circle',
+    error: 'times-circle',
+    warning: 'exclamation-triangle',
+    info: 'info-circle'
+  };
+  
+  toast.innerHTML = `
+    <i class="fas fa-${icons[type]}"></i>
+    <p>${message}</p>
+  `;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+// Close modal on overlay click
+document.getElementById('bookingModal').addEventListener('click', (e) => {
+  if (e.target.id === 'bookingModal') {
+    closeModal();
+  }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});
+</script>
+
+</body>
+</html>
